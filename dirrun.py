@@ -7,6 +7,7 @@ from tqdm import tqdm  # For progress bar
 import os
 
 DEFAULT_PAYLOAD_FILE = 'Basic-payload.txt'
+TOOL_NAME = 'R4Tw1z(DirTr0n)'
 
 def fetch_url(full_url, method, headers, timeout, delay, status_codes, output_file, verbose):
     try:
@@ -15,18 +16,18 @@ def fetch_url(full_url, method, headers, timeout, delay, status_codes, output_fi
         elif method.upper() == 'POST':
             response = requests.post(full_url, headers=headers, timeout=timeout)
         else:
-            print(f"[ERROR] Unsupported HTTP method: {method}")
+            print(f"[ERROR] {TOOL_NAME} - Unsupported HTTP method: {method}")
             return
         
         if status_codes and response.status_code in status_codes:
-            result = f"[+] FOUND: {full_url} (Status Code: {response.status_code})"
+            result = f"[+] {TOOL_NAME} FOUND: {full_url} (Status Code: {response.status_code})"
             if verbose:
                 print(result)
             if output_file:
                 with open(output_file, 'a') as out_file:
                     out_file.write(result + '\n')
         elif not status_codes and response.status_code == 200:
-            result = f"[+] FOUND: {full_url}"
+            result = f"[+] {TOOL_NAME} FOUND: {full_url}"
             if verbose:
                 print(result)
             if output_file:
@@ -34,14 +35,14 @@ def fetch_url(full_url, method, headers, timeout, delay, status_codes, output_fi
                     out_file.write(result + '\n')
         else:
             if verbose:
-                print(f"[-] NOT FOUND: {full_url} (Status Code: {response.status_code})")
+                print(f"[-] {TOOL_NAME} NOT FOUND: {full_url} (Status Code: {response.status_code})")
 
         time.sleep(delay)
     except requests.RequestException as e:
-        print(f"[ERROR] Connection error for {full_url}: {str(e).split(':')[0]}")
+        print(f"[ERROR] {TOOL_NAME} Connection error for {full_url}: {str(e).split(':')[0]}")
 
 def traversal_attack(url, payloads, method='GET', headers=None, timeout=10, delay=0, output_file=None, status_codes=None, verbose=False, concurrency=5):
-    print(f"\n[*] DirTr0n Directory Traversal Tool")
+    print(f"\n[*] {TOOL_NAME}")
     print(f"[*] Target URL: {url}")
     print(f"[*] HTTP Method: {method}")
     print(f"[*] Number of Payloads: {len(payloads)}")
@@ -76,7 +77,7 @@ def load_payloads(payload_source):
         return payload_source.split(',')
 
 def main():
-    parser = argparse.ArgumentParser(description='DirTr0n Directory Traversal Attack Tool')
+    parser = argparse.ArgumentParser(description=TOOL_NAME)
     parser.add_argument('-u', '--url', dest='url', required=True, help='Target URL')
     parser.add_argument('-p', '--payloads', dest='payloads', 
                         help='Comma-separated list of payloads or a file containing payloads (one per line). Default is "Basic-payload.txt" if not specified.')
@@ -105,7 +106,7 @@ def main():
                 key, value = header.split(':', 1)
                 headers[key.strip()] = value.strip()
             except ValueError:
-                print(f"[WARNING] Ignoring invalid header format: \"{header}\". Expected format is KEY:VALUE.")
+                print(f"[WARNING] {TOOL_NAME} - Ignoring invalid header format: \"{header}\". Expected format is KEY:VALUE.")
 
     payloads_file = args.payloads if args.payloads else DEFAULT_PAYLOAD_FILE
     payloads = load_payloads(payloads_file)
