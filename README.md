@@ -1,5 +1,8 @@
 # DirTr0n
 
+ ## This Tool is based on **CVE-2024-28995 Critical Directory Traversal Vulnerability**
+
+
 DirTr0n is an directory traversal and vulnerability scanning tool designed to help security professionals identify hidden directories and sensitive files on web servers. With its powerful features, including concurrency for faster scans, customizable headers, and detailed response analysis, DirTr0n provides a comprehensive solution for testing and securing web applications.
 
 # Features
